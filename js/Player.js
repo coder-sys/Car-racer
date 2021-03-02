@@ -19,11 +19,15 @@ class Player {
   }
 
   update(){
+    let x=300
     var playerIndex = "players/player" + this.index;
     database.ref(playerIndex).set({
       name:this.name,
-      distance:this.distance
+      distance:this.distance,
+      x:x,
+      y:displayHeight
     });
+    x+=200
   }
 
   static getPlayerInfo(){
@@ -32,4 +36,14 @@ class Player {
       allPlayers = data.val();
     })
   }
+  static updatePos=function(){
+    let index=0
+    for(let i in allPlayers){
+      index+=1
+    database.ref('players/'+i).update({
+      x:cars[index-1].x,
+      y:cars[index-1].y
+    })
+  }
+}
 }

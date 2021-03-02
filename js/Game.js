@@ -38,39 +38,61 @@ class Game {
     for(let i=0;i<cars.length;i++){
       cars[i].addImage(imageArray[i])
     }
+    let xindex=0
+    let yindex=0
+    for(let i in allPlayers){
+      xindex+=1
+      cars[xindex-1].x=allPlayers[i].x
+    }
+    for(let y in allPlayers){
+      yindex+=1
+      cars[yindex-1].y=allPlayers[y].y
+    }
   }
 
   play(){
+    imageMode(CENTER)
+    image(track,displayWidth/2,displayHeight/2,displayWidth-40,displayHeight*4)
     form.hide();
 
     Player.getPlayerInfo();
-    
+    let y
     if(allPlayers !== undefined){
-      image(track,0,-displayHeight*4,displayWidth,displayHeight*4)
-      var index = 0;
-
-      var x = 100;
-      var y;
-
-      for(var plr in allPlayers){
-        index = index + 1 ;
-        x = x + 200;
-        y = displayHeight - allPlayers[plr].distance;
-        cars[index-1].x = x;
-        cars[index-1].y = y;
-
-        if (index === player.index){
-          camera.position.x = displayWidth/2;
-          camera.position.y = cars[index-1].y
+      let index=0
+      for(let i in allPlayers){
+        index+=1
+        y = displayHeight-allPlayers[i].distance
+        cars[index-1].y=y
+        if(index===player.index){
+          fill('red')
+          ellipse(cars[index-1].x,y,60)
+          camera.position.x=cars[index-1].x
+          camera.position.y=cars[index-1].y
         }
-       
       }
-
-    }
-
-    if(keyIsDown(UP_ARROW) && player.index !== null){
-      player.distance +=10
-      player.update();
+      if(keyIsDown(UP_ARROW) && player.name!== null){
+        player.distance+=12
+        player.update()
+        console.log(player.index)
+      }
+      for(let randomvar=0;randomvar<cars.length;randomvar++){
+        ranks.push(cars[randomvar])
+      }
+      for(var t = 0;t<ranks.length;t++){
+        for(var i =0;i<t;i++){
+          if(ranks[i].y<ranks[i+1].y){
+            var temp=ranks[i+1].y
+            ranks[i].y=ranks[i+1].y
+            temp=ranks[i].y
+          }
+        }
+      }
+      for(let index=0;index<ranks.length;index++){
+        var initialHeight = 100
+        text(index,displayWidth-90,initialHeight)
+        initialHeight += 100
+        console.log(ranks[0])
+      }
     }
     if(player.distance>4000){
       gameState=2

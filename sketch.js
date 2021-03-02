@@ -5,7 +5,7 @@ var playerCount;
 var allPlayers;
 var distance = 0;
 var database;
-
+var ranks = []
 var form, player, game;
 
 var cars, car1, car2, car3, car4;
@@ -34,6 +34,14 @@ function draw(){
   if(gameState === 1){
     clear();
     game.play();
+    let i=0
+    for(let index in allPlayers){
+      i+=1
+      database.ref('players/'+index).update({
+        x:cars[i-1].x,
+        y:cars[i-1].y
+      })
+    }
   }
   if(gameState===2){
     game.end()
