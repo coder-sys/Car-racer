@@ -52,10 +52,11 @@ class Game {
 
   play(){
     imageMode(CENTER)
-    image(track,displayWidth/2,displayHeight/2,displayWidth-40,displayHeight*4)
+    image(track,displayWidth/2-160,displayHeight/2,displayWidth-40,displayHeight*40)
     form.hide();
 
     Player.getPlayerInfo();
+    player.getCarsAtEnd();
     let y
     if(allPlayers !== undefined){
       let index=0
@@ -75,31 +76,19 @@ class Game {
         player.update()
         console.log(player.index)
       }
-      for(let randomvar=0;randomvar<cars.length;randomvar++){
-        ranks.push(cars[randomvar])
-      }
-      for(var t = 0;t<ranks.length;t++){
-        for(var i =0;i<t;i++){
-          if(ranks[i].y<ranks[i+1].y){
-            var temp=ranks[i+1].y
-            ranks[i].y=ranks[i+1].y
-            temp=ranks[i].y
-          }
-        }
-      }
-      for(let index=0;index<ranks.length;index++){
-        var initialHeight = 100
-        text(index,displayWidth-90,initialHeight)
-        initialHeight += 100
-        console.log(ranks[0])
-      }
     }
     if(player.distance>4000){
       gameState=2
+      player.rank+=1
+      Player.updateCarsAtEnd(player.rank)
+      console.log(player.rank)
     }
     drawSprites();
   }
   end=function(){
     console.log('game ended')
+    camera.position.x = 0
+    camera.position.y = 0
+    text(player.rank,0,100)
   }
 }
